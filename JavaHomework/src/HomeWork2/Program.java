@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class Program {
     public static void main(String[] args) {
 //        task0jewels();
-        task1shuffleString();
+//        task1shuffleString();
+        task2recipe();
     }
 
     static String findJewelsInStones(String jewels, String stones) {
@@ -43,6 +44,39 @@ public class Program {
         String s = "abcdefghij";
         int[] index = {2,1,0,4,5,8,7,9,3,6};
         System.out.println(shuffle(s,index));
+    }
+
+    static String[] fillArray (int n, Scanner sc){
+        String[] arr = new String[n];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = sc.nextLine();
+        }
+        return arr;
+    }
+
+    static void task2recipe(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter count of lines:");
+        int n = scanner.nextInt();
+        scanner.nextLine();
+        String[] recipes = fillArray(n,scanner);
+        int m = scanner.nextInt();
+        scanner.nextLine();
+        String[] products = fillArray(m, scanner);
+        for (int i = 0; i < recipes.length; i++) {
+            for (int j = 0; j < products.length; j++) {
+                String[] tempProduct = products[j].split(" - ");
+                if (recipes[i].toLowerCase().contains(tempProduct[0])){
+                    recipes[i] = recipes[i].replaceAll(tempProduct[0], tempProduct[1]);
+                    recipes[i] = recipes[i].replaceAll(tempProduct[0].substring(0, 1).toUpperCase() + tempProduct[0].substring(1),
+                            tempProduct[1].substring(0, 1).toUpperCase() + tempProduct[1].substring(1));
+                }
+            }
+        }
+        for (String line: recipes) {
+            System.out.println(line);
+        }
+
     }
 
 }
