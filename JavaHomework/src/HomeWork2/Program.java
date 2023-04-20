@@ -1,8 +1,9 @@
 package HomeWork2;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -14,7 +15,8 @@ public class Program {
 //        task0jewels();
 //        task1shuffleString();
 //        task2recipe();
-        task3byte();
+//        task3byte();
+//        task3url();
     }
 
     static String findJewelsInStones(String jewels, String stones) {
@@ -102,7 +104,77 @@ public class Program {
             SimpleFormatter simpleFormatter = new SimpleFormatter();
             consoleHandler.setFormatter(simpleFormatter);
             logger.log(Level.WARNING, ex.getMessage());
-
         }
+    }
+
+    static String download(String url) throws IOException {
+        URL urlFile = new URL(url);
+        InputStream input = urlFile.openStream();
+        byte[] buffer = input.readAllBytes();
+        return new String(buffer);
+    }
+
+    static String change(String name, String fileContent) {
+        return String.format(fileContent, name);
+    }
+
+    static void saveOnLocal(String fileName, String fileContent) {
+        try{
+            String path = String.format("src\\HomeWork2\\%s.txt", fileName);
+            File result = new File(path);
+            FileWriter fileWriter = new FileWriter(result);
+            fileWriter.write(fileContent);
+            fileWriter.close();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    static void read(String localFilename){
+        try{
+            String path = String.format("src\\HomeWork2\\%s.txt", localFilename);
+            FileReader fileReader =new FileReader(path);
+
+            Logger logger = Logger.getLogger(Program.class.getName());
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            logger.addHandler(consoleHandler);
+            SimpleFormatter simpleFormatter = new SimpleFormatter();
+            consoleHandler.setFormatter(simpleFormatter);
+            StringBuilder stringBuilder = new StringBuilder();
+            while(fileReader.ready()){
+                stringBuilder.append((char)fileReader.read());
+            }
+            logger.info(stringBuilder.toString());
+            fileReader.close();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    static boolean removeFromLocale(String fileName) {
+        try{
+            String path = String.format("src\\HomeWork2\\%s.txt", fileName);
+            Files.delete(Path.of(path));
+            System.out.println("File was deleted");
+            return true;
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+
+    static void task3url() throws IOException {
+        try(Scanner scanner = new Scanner(System.in)){
+            String urlFile = "https://raw.githubusercontent.com/aksodar/JSeminar_2/master/src/main/resources/example.txt";
+            String fileName = "task3url";
+            System.out.println("Enter your name: ");
+            String newStr = change(scanner.nextLine(), download(urlFile));
+            saveOnLocal(fileName, newStr);
+            read(fileName);
+            System.out.println(removeFromLocale(fileName));
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
     }
 }
