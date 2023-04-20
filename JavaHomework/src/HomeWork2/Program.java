@@ -1,12 +1,20 @@
 package HomeWork2;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Program {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 //        task0jewels();
 //        task1shuffleString();
-        task2recipe();
+//        task2recipe();
+        task3byte();
     }
 
     static String findJewelsInStones(String jewels, String stones) {
@@ -60,6 +68,7 @@ public class Program {
         int n = scanner.nextInt();
         scanner.nextLine();
         String[] recipes = fillArray(n,scanner);
+        System.out.println("Enter count of pruducts:");
         int m = scanner.nextInt();
         scanner.nextLine();
         String[] products = fillArray(m, scanner);
@@ -79,4 +88,21 @@ public class Program {
 
     }
 
+    static void task3byte() throws IOException {
+        try(Scanner scanner = new Scanner(System.in)){
+            File result = new File("src\\HomeWork2\\result.txt");
+            byte num = scanner.nextByte(); scanner.nextLine();
+            FileWriter fileWriter = new FileWriter(result);
+            fileWriter.write(Byte.toString(num));
+            fileWriter.close();
+        } catch (Exception ex){
+            Logger logger = Logger.getLogger(Program.class.getName());
+            ConsoleHandler consoleHandler = new ConsoleHandler();
+            logger.addHandler(consoleHandler);
+            SimpleFormatter simpleFormatter = new SimpleFormatter();
+            consoleHandler.setFormatter(simpleFormatter);
+            logger.log(Level.WARNING, ex.getMessage());
+
+        }
+    }
 }
