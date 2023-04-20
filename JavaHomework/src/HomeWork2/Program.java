@@ -5,10 +5,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 public class Program {
     public static void main(String[] args) throws IOException {
@@ -17,6 +14,7 @@ public class Program {
 //        task2recipe();
 //        task3byte();
 //        task3url();
+        task4calculator();
     }
 
     static String findJewelsInStones(String jewels, String stones) {
@@ -176,5 +174,56 @@ public class Program {
             System.out.println(ex.getMessage());
         }
 
+    }
+
+    static void task4calculator() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter 2 numbers: ");
+        System.out.println("first:");
+        int a = scanner.nextInt();
+        System.out.println("second:");
+        int b = scanner.nextInt();
+        System.out.println("Enter number for mathematical action:\n" +
+                "1 - +;\n" +
+                "2 - -;\n" +
+                "3 - /;\n" +
+                "4 - *");
+        int num = scanner.nextInt();
+
+        Logger logger = Logger.getLogger(Program.class.getName());
+        FileHandler fileHandler = new FileHandler("src\\HomeWork2\\logCalculator.txt");
+        logger.addHandler(fileHandler);
+        SimpleFormatter simpleFormatter = new SimpleFormatter();
+        fileHandler.setFormatter(simpleFormatter);
+
+        switch (num){
+            case 1:
+                System.out.println(a + b);
+                logger.info(String.valueOf(a+b));
+                break;
+            case 2:
+                System.out.println(a - b);
+                logger.info(String.valueOf(a-b));
+                break;
+            case 3:
+                if (b != 0) {
+                    System.out.println((double) a / b);
+                    logger.info(String.valueOf(a/b));
+                }
+                else {
+                    System.out.println("Div by Zero");
+                    logger.log(Level.WARNING, "Div by Zero");
+                }
+                break;
+            case 4:
+                System.out.println(a * b);
+                logger.info(String.valueOf(a * b));
+                break;
+            default:
+                System.out.println("No action");
+                break;
+        }
+        scanner.close();
+        System.out.println();
     }
 }
