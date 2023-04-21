@@ -1,6 +1,5 @@
 package HomeWork3;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +12,7 @@ public class Task1 {
 
     }
 
-    static List<Integer> createList(int capacity, int min, int max){
+    public static List<Integer> createList(int capacity, int min, int max){
         List<Integer> list = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < capacity; i++) {
