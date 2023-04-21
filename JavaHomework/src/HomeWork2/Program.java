@@ -199,7 +199,7 @@ public class Program {
         switch (num){
             case 1:
                 System.out.println(a + b);
-                logger.info(String.valueOf(a+b));
+                logger.log(Level.INFO, String.valueOf(a+b));
                 break;
             case 2:
                 System.out.println(a - b);
