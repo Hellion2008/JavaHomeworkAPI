@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Task1 {
+class Task1 {
     public static void main(String[] args) {
         List<Integer> list = createList(10, 0,50);
         System.out.println(list);
