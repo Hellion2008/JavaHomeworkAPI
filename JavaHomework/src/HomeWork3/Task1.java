@@ -16,7 +16,7 @@ class Task1 {
         List<Integer> list = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < capacity; i++) {
-            list.add(random.nextInt(min, max));
+            list.add(random.nextInt(min,max));
         }
         return list;
     }
