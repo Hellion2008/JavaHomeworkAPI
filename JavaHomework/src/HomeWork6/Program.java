@@ -14,32 +14,37 @@ public class Program {
         noteBooks.add(new NoteBook(8,1024, "Windows", "Grey"));
         noteBooks.add(new NoteBook(4,512, "MacOS", "Green"));
 
-//        for(NoteBook noteBook: noteBooks)
-//            System.out.println(noteBook);
-
-        getMinValues(getFilters(noteBooks));
-//        filterNoteBooks(noteBooks);
+        Set<NoteBook> set = filterNoteBooks(noteBooks);
+        System.out.println("Filtered notebooks: ");
+        for(NoteBook noteBook: set)
+            System.out.println(noteBook);
     }
 
-    static Map<Integer,String> getFilters(Set<NoteBook> set){
-        String menu = "Введите цифру, соответствующую необходимому критерию\n" +
-                "1 - ОЗУ\n" +
-                "2 - Объем ЖД\n" +
-                "3 - Операционная система\n" +
-                "4 - Цвет\n" +
-                "5 - Выход\n";
+    private static Map<Integer,String> getFilters(Set<NoteBook> set){
+        String menu = "Enter number, соответствующую необходимому критерию\n" +
+                "1 - RAM\n" +
+                "2 - HDD\n" +
+                "3 - OS\n" +
+                "4 - Color\n" +
+                "5 - Exit";
         Map<Integer,String> map = new HashMap<>();
-        try(Scanner scanner = new Scanner(System.in)){
+        Scanner scanner = new Scanner(System.in);
             System.out.println(menu);
             int filter = scanner.nextInt();
             scanner.nextLine();
             do {
-                map.put(filter, "");
-                System.out.println(menu);
-                filter = scanner.nextInt();
-                scanner.nextLine();
+                if (filter <= 5 && filter > 0){
+                    map.put(filter, "");
+                    System.out.println(menu);
+                    filter = scanner.nextInt();
+                    scanner.nextLine();
+                } else {
+                    System.out.println("Incorrect input");
+                    System.out.println(menu);
+                    filter = scanner.nextInt();
+                    scanner.nextLine();
+                }
             } while (filter != 5);
-        }
 
 //        for(Map.Entry<Integer,String> el: map.entrySet()){
 //            System.out.println(el.getKey() + " " + el.getValue());
@@ -48,17 +53,38 @@ public class Program {
 
     }
 
-    static Map<Integer,String> getMinValues(Map<Integer,String> map){
-        System.out.println("Задайте (минимальное) значение для поиска\n");
-        try(Scanner scanner = new Scanner(System.in)){
-            for (Integer x: map.keySet()){
-                String tmp = scanner.nextLine();
-                map.replace(x,tmp);
+    private static Map<Integer,String> getMinValues(Map<Integer,String> map){
+        System.out.println("Enter (min) value for research");
+        Scanner scanner = new Scanner(System.in);
+        for (Map.Entry<Integer, String> x: map.entrySet()){
+            System.out.print(x + " ");
+            if (scanner.hasNext())
+                x.setValue(scanner.nextLine());
+        }
+//        for(Map.Entry<Integer,String> el: map.entrySet()){
+//            System.out.println(el.getKey() + " " + el.getValue());
+//        }
+        return map;
+    }
+
+    static Set<NoteBook> filterNoteBooks (Set<NoteBook> set){
+        Map<Integer,String> map = getMinValues(getFilters(set));
+        Set<NoteBook> filterSet = new HashSet<>();
+        boolean condition = false;
+        for (NoteBook noteBook: set){
+            for (Map.Entry<Integer, String> el: map.entrySet()){
+                switch (el.getKey()){
+                    case 1: condition = Integer.parseInt(el.getValue()) <= noteBook.getRam(); break;
+                    case 2: condition = Integer.parseInt(el.getValue()) <= noteBook.getHdd(); break;
+                    case 3: condition = el.getValue().equals(noteBook.getOs()); break;
+                    case 4: condition = el.getValue().equals(noteBook.getColor());
+                }
+                if (!condition) break;
+            }
+            if (condition) {
+                filterSet.add(noteBook);
             }
         }
-        for(Map.Entry<Integer,String> el: map.entrySet()){
-            System.out.println(el.getKey() + " " + el.getValue());
-        }
-        return map;
+        return filterSet;
     }
 }
